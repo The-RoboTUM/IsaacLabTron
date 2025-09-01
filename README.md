@@ -26,19 +26,76 @@ This is a Fork of Shafeef Omar's help for the Dodo Alive! Team 6 - Tron Locomoti
 
 
 
+## Prerequisites
+
+1. Install **Isaac Sim** and **Isaac Lab**, following the official instructions:  
+   👉 [IsaacLab Pip Installation Guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/pip_installation.html)
+
+2. Important notes:  
+   - Make sure to install Isaac Sim **via pip**.  
+   - Recommended version: **Isaac Sim 4.5.0**.  
+     - **Isaac Sim 5.0.0** also works, but you may encounter some package version conflicts.  
+   - It is highly recommended to create a virtual environment with **Python 3.10**, for example:  
+     ```bash
+     conda create -n env_isaaclab_python10 python=3.10
+     conda activate env_isaaclab_python10
+     ```
+
+3. Once Isaac Sim and Isaac Lab are installed, clone this repository and activate the virtual environment.
+
+---
+
+## Converting URDF to USD
+
+### Step 1: Configure Environment Variable
+
+```bash
+export ROS_PACKAGE_PATH=~/IsaacLabTron/scripts:$ROS_PACKAGE_PATH
+```
 
 
+- Purpose: Tells the system where to look for package:`//robot_description/... paths`.
+
+- Since the URDF file references STL mesh files under `robot_description/pointfoot/PF_P441A/meshes/`, we need to include the `scripts/` directory in `ROS_PACKAGE_PATH`.
 
 
+### Step 2: Create Output Directory
+```bash
+mkdir -p ~/IsaacLabTron/assets/robots/tron
+```
 
+- Purpose: Prepares the output directory.
 
+- The converted USD file will be saved as `assets/robots/tron/tron.usd`.
 
+- If this directory does not exist, the conversion process will fail.
 
+### Step 3: Run the URDF → USD Conversion
+```bash
+mkdir -p 
+cd ~/IsaacLabTron
+./isaaclab.sh -p scripts/tools/convert_urdf.py \
+  ~/IsaacLabTron/scripts/robot_description/pointfoot/PF_P441A/urdf/robot.urdf \
+  assets/robots/tron/tron.usd
+```
 
+- `cd /home/pc/IsaacLabTron`: Navigate to the IsaacLab project root.
 
+- `./isaaclab.sh -p`: Launches IsaacLab with Python mode.
 
+- `scripts/tools/convert_urdf.py`: The conversion tool script.
 
+- `/.../robot.urdf`: Input URDF file path.
 
+- `assets/robots/tron/tron.usd`: Output USD file path.
+
+### Conversion Result
+
+If the process completes successfully, the converted USD file will be generated at:
+`
+~/IsaacLabTron/assets/robots/tron/tron.usd
+`
+This USD file can then be directly loaded into Isaac Sim as the robot model.
 
 
 ![Isaac Lab](docs/source/_static/isaaclab.jpg)
